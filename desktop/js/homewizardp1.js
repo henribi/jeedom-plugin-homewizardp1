@@ -70,7 +70,7 @@ $('.pluginAction[data-action=openLocation]').on('click', function () {
 $('#bt_syncmultiMATIC').on('click', function () {
     $.ajax({
         type: "POST",
-        url: "plugins/HomewizardP1/core/ajax/HomewizardP1.ajax.php",
+        url: "plugins/homewizardp1/core/ajax/homewizardp1.ajax.php",
         data: {
             action: "syncDevices",
         },
@@ -85,7 +85,7 @@ $('#bt_syncmultiMATIC').on('click', function () {
             }
             $('#div_alert').showAlert({ message: '{{Synchronisation réussie.}}', level: 'success' });
             setTimeout(function () {
-                window.location.replace("index.php?v=d&m=HomewizardP1&p=HomewizardP1");
+                window.location.replace("index.php?v=d&m=homewizardp1&p=homewizardp1");
             }, 3000);
         }
     });
@@ -94,7 +94,7 @@ $('#bt_syncmultiMATIC').on('click', function () {
 $('#bt_createCommands').on('click', function () {
     $.ajax({
         type: "POST",
-        url: "plugins/HomewizardP1/core/ajax/HomewizardP1.ajax.php",
+        url: "plugins/homewizardp1/core/ajax/homewizardp1.ajax.php",
         data: {
             action: "createCommands",
             id: $('.eqLogicAttr[data-l1key=id]').value()
@@ -120,7 +120,7 @@ $(".eqLogicAttr[data-l1key='configuration'][data-l2key='type']").change(function
     if ($(this).value() != '') {
         $.ajax({
             type: "POST",
-            url: "plugins/HomewizardP1/core/ajax/HomewizardP1.ajax.php",
+            url: "plugins/homewizardp1/core/ajax/homewizardp1.ajax.php",
             data: {
                 action: "getImage",
                 id: $('.eqLogicAttr[data-l1key=id]').value()

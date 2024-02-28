@@ -2,7 +2,7 @@
 if (!isConnect('admin')) {
     throw new Exception('{{401 - Accès non autorisé}}');
 }
-$plugin = plugin::byId('HomewizardP1');
+$plugin = plugin::byId('homewizardp1');
 sendVarToJS('eqType', $plugin->getId());
 $eqLogics = eqLogic::byType($plugin->getId());
 ?>
@@ -179,5 +179,5 @@ $eqLogics = eqLogic::byType($plugin->getId());
     </div>
 </div>
 
-<?php include_file('desktop', 'HomewizardP1', 'js', 'HomewizardP1'); ?>
+<?php include_file('desktop', 'homewizardp1', 'js', 'homewizardp1'); ?>
 <?php include_file('core', 'plugin.template', 'js'); ?>
