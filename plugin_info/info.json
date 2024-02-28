@@ -1,0 +1,34 @@
+{
+	"id": "homewizardp1",
+	"name": "Homewizard P1",
+	"description": "Plugin de se connecter à un Homewizard équipé d'un port P1",
+	"utilization": "",
+	"licence": "AGPL",
+	"author": "Mips, Henribi",
+	"require": "4.2",
+	"category": "energy",
+	"hasDependency": false,
+	"hasOwnDeamon": true,
+	"maxDependancyInstallTime": 30,
+	"changelog": "https://henribi.github.io/jeedom-plugin-homewizardp1/#language#/changelog",
+	"documentation": "https://henribi.github.io/jeedom-plugin-homewizardp1/#language#/",
+	"changelog_beta": "https://henribi.github.io/jeedom-plugin-homewizardp1/#language#/changelog",
+	"documentation_beta": "https://henribi.github.io/jeedom-plugin-homewizardp1/#language#/",
+	"link": {
+		"forum": "https://community.jeedom.com/tag/plugin-HomewizardP1",
+		"video": ""
+	},
+	"language": [
+		"fr_FR",
+		"en_US"
+	],
+	"compatibility": [
+		"smart",
+		"atlas",
+		"luna",
+		"rpi",
+		"docker",
+		"diy",
+		"v4"
+	]
+}
