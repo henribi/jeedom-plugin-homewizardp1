@@ -326,10 +326,6 @@ class homewizardp1 extends eqLogic {
 		$this->createCommands();
 	}
 
-	public function postUpdate() {
-		$this->createCommands();
-	}
-
 
 	public function postSave() {
 		// $host = $this->getConfiguration('host');

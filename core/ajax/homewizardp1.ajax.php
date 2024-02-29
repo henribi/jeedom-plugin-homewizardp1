@@ -27,7 +27,7 @@ try {
 	ajax::init();
 
 	if (init('action') == 'createCommands') {
-		/** @var SmartMeterP1 */
+		/** @var homewizardp1 */
 		$eqLogic = eqLogic::byId(init('id'));
 		if (!is_object($eqLogic)) {
 			throw new Exception(__('eqLogic non trouvé : ', __FILE__) . init('id'));
