@@ -58,7 +58,7 @@ function addCmdToTable(_cmd) {
     $tr.setValues(_cmd, '.cmdAttr');
     jeedom.cmd.changeType($tr, init(_cmd.subType));
 
-    $tr.find('.cmdAttr[data-l1key=type].prop("disabled", true);
+    $tr.find('.cmdAttr[data-l1key=type]').prop("disabled", true);
 }
 
 $("#table_cmd").sortable({ axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true });
