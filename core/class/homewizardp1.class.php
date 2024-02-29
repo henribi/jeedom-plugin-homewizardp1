@@ -204,9 +204,13 @@ class homewizardp1 extends eqLogic {
 					"31.7.0",	// intensity 1
 					"51.7.0",	// intensity 1
 					"71.7.0",	// intensity 1
-					"21.7.0",	// Power 1
-					"41.7.0",	// Power 2
-					"61.7.0",	// Power 3
+					"21.7.0",	// import power 1
+					"41.7.0",	// import power 2
+					"61.7.0",	// import power 3
+					"22.7.0",	// export power 1
+					"42.7.0",	// export power 2
+					"62.7.0"	// export power 3
+
 				];
 				$fullregex = '/\d\-\d:(\d+\.\d+\.\d+)\((\d+\.\d{1,3})\*([VAkWh]+){1,3}\)/';
 				$coderegex = '/\d\-\d:(\d+\.\d+\.\d+)\((.*)\)/';
@@ -215,30 +219,30 @@ class homewizardp1 extends eqLogic {
 
 				$fa = explode("\n", $f);
 
-				foreach($fa as $data) {
+				foreach($fa as $line) {
 					$matches = [];
-					if (preg_match($fullregex, $data, $matches) === 1) {
-						$current_code = $matches[1];
-						if (in_array($current_code, $codes)) {
+					if (preg_match($fullregex, $line, $matches) === 1) {
+						$code = $matches[1];
+						if (in_array($code, $codes)) {
 							$value = $matches[2];
 							$unit = $matches[3];
-							// log::add(__CLASS__, 'debug', "{$current_code}: {$value} {$unit}");
+							// log::add(__CLASS__, 'debug', "{$code}: {$value} {$unit}");
 							if ($unit === 'kW') {
 								$value *= 1000;
 							}
-							$this->checkAndUpdateCmd($current_code, $value);
-							$results[$current_code] = $value;
+							$this->checkAndUpdateCmd($code, $value);
+							$results[$code] = $value;
 						} else {
-							//log::add(__CLASS__, 'debug', "Unknown code {$current_code}");
+							log::add(__CLASS__, 'warning', "Unknown code {$code}: {$line}");
 						}
-					} elseif (preg_match($coderegex2, $data, $matches) === 1) {
-						$current_code = $matches[1];
+					} elseif (preg_match($coderegex2, $line, $matches) === 1) {
+						$code = $matches[1];
 						$c_date = $matches[2];
-						$current_value = $matches[3];
+						$value = $matches[3];
 
-						switch ($current_code) {
+						switch ($code) {
 							case '1.6.0':
-								$this->checkAndUpdateCmd($current_code, $current_value);
+								$this->checkAndUpdateCmd($code, $value);
 								$current_date = substr($c_date, 4, 2) . '/' . substr($c_date, 2, 2) . '/' . substr($c_date, 0, 2) . '  ' . substr($c_date, 6, 2) . ':' . substr($c_date, 8, 2) . ':' . substr($c_date, 10, 2);
 								$this->checkAndUpdateCmd($current_code . 'd', $current_date);
 								break;
@@ -246,9 +250,9 @@ class homewizardp1 extends eqLogic {
 								//log::add(__CLASS__, 'debug', "additional unused data(2): {$current_code}={$current_data}");
 								break;
 						}
-					} elseif (preg_match($coderegex, $data, $matches) === 1) {
-						$current_code = $matches[1];
-						$current_data = $matches[2];
+					} elseif (preg_match($coderegex, $line, $matches) === 1) {
+						$code = $matches[1];
+						$data = $matches[2];
 
 						switch ($current_code) {
 							case '1.0.0':
@@ -257,14 +261,14 @@ class homewizardp1 extends eqLogic {
 								break;
 							case '96.1.1': // serial number
 							case '96.1.4': // id
-								$this->checkAndUpdateCmd($current_code, $current_data);
+								$this->checkAndUpdateCmd($code, $data);
 								break;
 							case '96.14.0': // day/night
-								$this->checkAndUpdateCmd($current_code, $current_data == '0001');
+								$this->checkAndUpdateCmd($code, (int)($data == '0001'));
 								break;
 							case '96.13.0': // message and last code from the run
-								if ($current_data != '') {
-									log::add(__CLASS__, 'info', "Message received: {$current_code}={$current_data}");
+								if ($data != '') {
+									log::add(__CLASS__, 'info', "Message received: {$code}={$data}");
 								}
 								$this->checkAndUpdateCmd('totalImport', $results['1.8.1'] + $results['1.8.2']);
 								$this->checkAndUpdateCmd('totalExport', $results['2.8.1'] + $results['2.8.2']);
@@ -272,11 +276,11 @@ class homewizardp1 extends eqLogic {
 								// log::add(__CLASS__, 'debug', "============");
 								break 2; // break from switch & while/foreach because last code from the run
 							default:
-								//log::add(__CLASS__, 'debug', "additional unused data: {$current_code}={$current_data}");
+								//log::add(__CLASS__, 'warning', "Unknown data: {$code}={$data}");
 								break;
 						}
 					} else {
-					 	//log::add(__CLASS__, 'debug', "cannot extract actual code & value from raw data: {$data}");
+					 	//log::add(__CLASS__, 'debug', "cannot extract actual code & value from raw data: {$line}");
 					}
 				}
 			}
@@ -285,6 +289,7 @@ class homewizardp1 extends eqLogic {
 		} finally {
 			;
 		}
+		log::add(__CLASS__, 'info', "Successfuly refreshed values of {$this->getName()} ({$host}:{$port})");
 
 	}
 
@@ -307,7 +312,7 @@ class homewizardp1 extends eqLogic {
 		}
 	}
 
-	public function createCommands($syncValues = false) {
+	public function createCommands() {
 		log::add(__CLASS__, 'debug', "Checking commands of {$this->getName()}");
 
 		$this->createCommandsFromConfigFile(__DIR__ . '/../config/p1.json', 'p1');
@@ -315,9 +320,16 @@ class homewizardp1 extends eqLogic {
 		return $this;
 	}
 
+
+
 	public function postInsert() {
 		$this->createCommands();
 	}
+
+	public function postUpdate() {
+		$this->createCommands();
+	}
+
 
 	public function postSave() {
 		// $host = $this->getConfiguration('host');

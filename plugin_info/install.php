@@ -51,4 +51,13 @@ function homewizardp1_update() {
 }
 
 function homewizardp1_remove() {
+    try {
+        $crons = cron::searchClassAndFunction('homewizardp1', 'dailyReset');
+        if (is_array($crons)) {
+            foreach ($crons as $cron) {
+                $cron->remove();
+            }
+        }
+    } catch (Exception $e) {
+    }
 }
