@@ -244,7 +244,7 @@ class homewizardp1 extends eqLogic {
 							case '1.6.0':
 								$this->checkAndUpdateCmd($code, $value);
 								$current_date = substr($c_date, 4, 2) . '/' . substr($c_date, 2, 2) . '/' . substr($c_date, 0, 2) . '  ' . substr($c_date, 6, 2) . ':' . substr($c_date, 8, 2) . ':' . substr($c_date, 10, 2);
-								$this->checkAndUpdateCmd($current_code . 'd', $current_date);
+								$this->checkAndUpdateCmd($code . 'd', $current_date);
 								break;
 							default:
 								//log::add(__CLASS__, 'debug', "additional unused data(2): {$current_code}={$current_data}");
@@ -254,7 +254,7 @@ class homewizardp1 extends eqLogic {
 						$code = $matches[1];
 						$data = $matches[2];
 
-						switch ($current_code) {
+						switch ($code) {
 							case '1.0.0':
 								// datetime; ex:'240118094756W' => 24/01/18 09:47:56
 								// not usefull
