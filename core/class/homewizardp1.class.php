@@ -233,7 +233,7 @@ class homewizardp1 extends eqLogic {
 							$this->checkAndUpdateCmd($code, $value);
 							$results[$code] = $value;
 						} else {
-							log::add(__CLASS__, 'warning', "Unknown code {$code}: {$line}");
+							//log::add(__CLASS__, 'warning', "Unknown code {$code}: {$line}");
 						}
 					} elseif (preg_match($coderegex2, $line, $matches) === 1) {
 						$code = $matches[1];
